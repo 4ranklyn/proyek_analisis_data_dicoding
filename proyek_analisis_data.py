@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
+
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import matplotlib.pyplot as plt
 import streamlit as st
-import matplotlib as plt
-
-
+    
 hour_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/hour.csv')
 day_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/day.csv')
-
 
 min_temp = -8
 max_temp = 39
@@ -32,31 +31,163 @@ year_mapping = {0: 2011, 1: 2012}
 hour_df['yr'] = hour_df['yr'].map(year_mapping)
 day_df['yr'] = day_df['yr'].map(year_mapping)
 
+hour_df.describe()
+
+day_df.describe()
+
+
 
 yearly_monthly_user_totals = day_df.groupby(['yr', 'mnth'])['cnt'].sum().unstack()
 
-yearly_monthly_user_totals.plot(kind='bar', stacked=False)
+yearly_monthly_user_totals.plot(kind='bar', stacked=True)
 
+plt.title("Monthly User Usage across 2011 and 2012")
+plt.xlabel("Month")
+plt.ylabel("Total User Usage (cnt)")
+plt.legend(title="Year")
+
+plt.show()
 
 casual_count = day_df['casual'].sum()
 registered_count = day_df['registered'].sum()
 total_count = day_df['cnt'].sum()
 
+print("Casual Count:", casual_count)
+print("Registered Count:", registered_count)
+print("Total Count:", total_count)
 
 labels = ['Casual Users', 'Registered Users']
 sizes = [casual_count, registered_count]
 colors = ['#ff9999','#66b3ff']
 explode = (0.1, 0)
 
+plt.figure(figsize=(8, 6))
+plt.pie(sizes, explode=explode, labels=labels, colors=colors,
+        autopct='%1.1f%%', shadow=True, startangle=140)
+
+plt.axis('equal')
+plt.title('Distribution of Casual Users vs Registered Users')
+plt.show()
+
 
 monthly_changes = day_df.groupby(['yr', 'mnth'])[['temp', 'atemp', 'hum', 'windspeed']].mean()
 
+# Separate data for 2011 and 2012
 monthly_changes_2011 = monthly_changes.loc[2011]
 monthly_changes_2012 = monthly_changes.loc[2012]
 
+print("Monthly changes in 2011:\n", monthly_changes_2011)
+print("\nMonthly changes in 2012:\n", monthly_changes_2012)
+
+plt.figure(figsize=(20, 5))  # Adjust figure size for better readability
+
+# First chart: temp and atemp
+plt.subplot(1, 3, 1)  # 1 row, 3 columns, first subplot
+plt.plot(monthly_changes_2011.index, monthly_changes_2011['temp'], label='Temperature')
+plt.plot(monthly_changes_2011.index, monthly_changes_2011['atemp'], label='Feels Like Temperature')
+plt.title('Monthly Temperature and Feels Like Temperature (2011)')
+plt.xlabel('Month')
+plt.ylabel('Temperature')
+plt.legend()
+
+# Second chart: hum
+plt.subplot(1, 3, 2)  # 1 row, 3 columns, second subplot
+plt.plot(monthly_changes_2011.index, monthly_changes_2011['hum'], label='Humidity')
+plt.title('Monthly Humidity (2011)')
+plt.xlabel('Month')
+plt.ylabel('Humidity')
+plt.legend()
+
+# Third chart: windspeed
+plt.subplot(1, 3, 3)  # 1 row, 3 columns, third subplot
+plt.plot(monthly_changes_2011.index, monthly_changes_2011['windspeed'], label='Windspeed')
+plt.title('Monthly Windspeed (2011)')
+plt.xlabel('Month')
+plt.ylabel('Windspeed')
+plt.legend()
+
+plt.tight_layout()  # Adjust subplot parameters for a tight layout
+plt.show()
+
+
+plt.figure(figsize=(20, 5))  # Adjust figure size for better readability
+
+# First chart: temp and atemp
+plt.subplot(1, 3, 1)  # 1 row, 3 columns, first subplot
+plt.plot(monthly_changes_2012.index, monthly_changes_2012['temp'], label='Temperature')
+plt.plot(monthly_changes_2012.index, monthly_changes_2012['atemp'], label='Feels Like Temperature')
+plt.title('Monthly Temperature and Feels Like Temperature (2012)')
+plt.xlabel('Month')
+plt.ylabel('Temperature')
+plt.legend()
+
+# Second chart: hum
+plt.subplot(1, 3, 2)  # 1 row, 3 columns, second subplot
+plt.plot(monthly_changes_2012.index, monthly_changes_2012['hum'], label='Humidity')
+plt.title('Monthly Humidity (2012)')
+plt.xlabel('Month')
+plt.ylabel('Humidity')
+plt.legend()
+
+# Third chart: windspeed
+plt.subplot(1, 3, 3)  # 1 row, 3 columns, third subplot
+plt.plot(monthly_changes_2012.index, monthly_changes_2012['windspeed'], label='Windspeed')
+plt.title('Monthly Windspeed (2012)')
+plt.xlabel('Month')
+plt.ylabel('Windspeed')
+plt.legend()
+
+plt.tight_layout()  # Adjust subplot parameters for a tight layout
+plt.show()
+
+# Group daily changes of weathersit across each 24 month
+for year in [2011, 2012]:
+  for month in range(1, 13):
+    monthly_data = day_df[(day_df['yr'] == year) & (day_df['mnth'] == month)]
+    if not monthly_data.empty:
+      plt.figure(figsize=(12, 6))
+      plt.plot(monthly_data['dteday'], monthly_data['weathersit'], marker='o')
+      plt.title(f"Daily Weather Situation Changes ({year}-{month})")
+      plt.xlabel("Date")
+      plt.ylabel("Weather Situation (1-4)")
+      plt.yticks(range(1, 5))
+      plt.ylim(0.5, 4.5)  # Add some deviation for better readability
+      plt.grid(True)
+      plt.xticks(rotation=45, ha='right')
+      plt.tight_layout()
+      plt.show()
+
+
 average_user_per_hour = hour_df.groupby('hr')['cnt'].mean()
+print(average_user_per_hour)
+
+plt.figure(figsize=(10, 6))
+plt.plot(average_user_per_hour.index, average_user_per_hour.values)
+plt.title('Average User Count per Hour')
+plt.xlabel('Hour')
+plt.ylabel('Average User Count')
+plt.grid(True)
+plt.show()
 
 average_hourly_conditions = hour_df.groupby('hr')[['hum', 'temp', 'atemp', 'windspeed']].mean()
+print(average_hourly_conditions)
+
+plt.figure(figsize=(12, 6))
+
+plt.plot(average_hourly_conditions.index, average_hourly_conditions['hum'], label='Humidity')
+plt.plot(average_hourly_conditions.index, average_hourly_conditions['temp'], label='Temperature')
+plt.plot(average_hourly_conditions.index, average_hourly_conditions['atemp'], label='Feels Like Temperature')
+plt.plot(average_hourly_conditions.index, average_hourly_conditions['windspeed'], label='Windspeed')
+
+
+plt.title('Average Hourly Conditions')
+plt.xlabel('Hour')
+plt.ylabel('Average Value')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+
 
 st.header('Bike Sharing Dashboard')
 
