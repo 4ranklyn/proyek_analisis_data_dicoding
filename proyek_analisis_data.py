@@ -7,8 +7,9 @@ import seaborn as sns
 import streamlit as st
 
 
-hour_df = pd.read_csv('content\data\hour.csv')
-day_df = pd.read_csv('content\data\day.csv')
+hour_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/hour.csv')
+day_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/day.csv')
+
 
 min_temp = -8
 max_temp = 39
