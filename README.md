@@ -49,3 +49,4 @@ Further analysis can focus on:
 - Investigating the influence of marketing campaigns on user activity.
 - Conducting user surveys to understand their preferences and motivations.
 
+Access the app at https://sierratangodelta.streamlit.app/
