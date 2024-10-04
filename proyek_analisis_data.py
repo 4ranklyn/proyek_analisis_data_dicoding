@@ -240,5 +240,5 @@ st.write("Most users use the service around 8 AM and 5 PM.")
 
 st.subheader('Average Hourly Conditions')
 st.line_chart(average_hourly_conditions)
-
-st.write("Summary: The busiest months were September 2011 and September 2012, possibly due to favorable weather. Rush hour appears to be around 8 AM and 5 PM, when people commute to work or school.  Comfortable temperature and humidity levels appear to contribute to higher user counts. ")
+st.subheader("Summary:")
+st.write("The busiest months were September 2011 and September 2012, possibly due to favorable weather. Rush hour appears to be around 8 AM and 5 PM, when people commute to work or school.  Comfortable temperature and humidity levels appear to contribute to higher user counts. ")
