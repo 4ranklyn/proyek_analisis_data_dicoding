@@ -257,6 +257,7 @@ chart_windspeed_2011 = alt.Chart(monthly_changes_2011).mark_line(color='blue').e
 
 # Display 2011 charts in columns
 st.altair_chart(combined_temp_2011, use_container_width=True)
+st.write("Blue means temperature, orange means feels like temperature.")
 st.altair_chart(chart_hum_2011, use_container_width=True)
 st.altair_chart(chart_windspeed_2011, use_container_width=True)
 
@@ -308,6 +309,7 @@ chart_windspeed_2012 = alt.Chart(monthly_changes_2012).mark_line(color='blue').e
 
 # Display 2012 charts in columns
 st.altair_chart(combined_temp_2012, use_container_width=True)
+st.write("Blue means temperature, orange means feels like temperature.")
 st.altair_chart(chart_hum_2012, use_container_width=True)
 st.altair_chart(chart_windspeed_2012, use_container_width=True)
 
@@ -316,6 +318,30 @@ st.line_chart(average_user_per_hour)
 st.write("Most users use the service around 8 AM and 5 PM.")
 
 st.subheader('Average Hourly Conditions')
-st.line_chart(average_hourly_conditions)
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+
+# First subplot: Temperature and Feels Like Temperature
+ax1.plot(average_hourly_conditions.index, average_hourly_conditions['temp'], label='Temperature (Celsius)', color='orange')
+ax1.plot(average_hourly_conditions.index, average_hourly_conditions['atemp'], label='Feels Like Temperature (Celsius)', color='red')
+
+ax1.set_title('Average Hourly Temperature Conditions')
+ax1.set_xlabel('Hour')
+ax1.set_ylabel('Temperature (Celsius)')
+ax1.grid(True)
+ax1.legend()
+
+# Second subplot: Humidity and Windspeed
+ax2.plot(average_hourly_conditions.index, average_hourly_conditions['hum'], label='Humidity', color='blue')
+ax2.plot(average_hourly_conditions.index, average_hourly_conditions['windspeed'], label='Windspeed', color='green')
+
+ax2.set_title('Average Hourly Humidity and Windspeed Conditions')
+ax2.set_xlabel('Hour')
+ax2.set_ylabel('Average Value')
+ax2.grid(True)
+ax2.legend()
+
+# Adjust layout to prevent overlap
+plt.tight_layout()
+st.pyplot(fig)
 st.subheader("Summary:")
 st.write("The busiest months were September 2011 and September 2012, possibly due to favorable weather. Rush hour appears to be around 8 AM and 5 PM, when people commute to work or school.  Comfortable temperature and humidity levels appear to contribute to higher user counts. ")
