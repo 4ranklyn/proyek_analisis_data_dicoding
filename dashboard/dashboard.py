@@ -209,7 +209,6 @@ st.write(f"From {total_count} users, there are {registered_count} registered use
 
 st.subheader("Monthly Climate Changes in 2011")
 
-# Temperature and Feels Like Temperature in 2011
 chart_temp_2011 = alt.Chart(monthly_changes_2011).mark_line(color='#1f77b4').encode(
     x='mnth:O',
     y='temp:Q',
@@ -235,16 +234,12 @@ combined_temp_2011 = alt.layer(chart_temp_2011, chart_atemp_2011).resolve_scale(
     title=None,
     orient='bottom',
     labelFontSize=12
-).encode(
-    color=alt.condition(
-        alt.datum.atemp == alt.datum.atemp,  # Ensure both colors are represented in the legend
-        alt.Color('key:N', scale=alt.Scale(domain=['Temperature', 'Feels Like Temperature'], range=['#1f77b4', '#ff7f0e']))
-    )
 ).properties(
-    title='Monthly Temperature vs Feels Like Temperature In Celcius (2011)',
+    title='Temperature vs Feels Like Temperature (2011)',
     width=600,
     height=300
 )
+
 # Humidity in 2011
 chart_hum_2011 = alt.Chart(monthly_changes_2011).mark_line(color='green').encode(
     x='mnth:O',
