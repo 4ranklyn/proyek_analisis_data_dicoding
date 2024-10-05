@@ -328,16 +328,16 @@ temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
     x=alt.X('hour:O', title='Hour'),
     y=alt.Y('temp:Q', title='Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['temp']), max(average_hourly_conditions['temp'])])),
     color=alt.value('orange'),
-    tooltip=['hour', 'temp']
+    tooltip=['hr', 'temp']
 ).properties(
     title='Average Hourly Temperature'
 )
 
 atemp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
-    x='hour:O',
+    x='hr:O',
     y=alt.Y('atemp:Q', title='Feels Like Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['atemp']), max(average_hourly_conditions['atemp'])])),
     color=alt.value('red'),
-    tooltip=['hour', 'atemp']
+    tooltip=['hr', 'atemp']
 ).properties(
     title=''
 )
@@ -346,19 +346,19 @@ combined_temp_chart = alt.layer(temp_chart, atemp_chart).resolve_scale(y='shared
 
 # Humidity and Windspeed chart
 hum_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
-    x=alt.X('hour:O', title='Hour'),
+    x=alt.X('hr:O', title='Hour'),
     y=alt.Y('hum:Q', title='Humidity', scale=alt.Scale(domain=[min(average_hourly_conditions['hum']), max(average_hourly_conditions['hum'])])),
     color=alt.value('blue'),
-    tooltip=['hour', 'hum']
+    tooltip=['hr', 'hum']
 ).properties(
     title='Average Hourly Humidity'
 )
 
 windspeed_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
-    x='hour:O',
+    x='hr:O',
     y=alt.Y('windspeed:Q', title='Windspeed', scale=alt.Scale(domain=[min(average_hourly_conditions['windspeed']), max(average_hourly_conditions['windspeed'])])),
     color=alt.value('green'),
-    tooltip=['hour', 'windspeed']
+    tooltip=['hr', 'windspeed']
 ).properties(
     title='Average Hourly Windspeed'
 )
