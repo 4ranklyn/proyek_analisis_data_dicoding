@@ -126,7 +126,6 @@ plt.tight_layout()  # Adjust subplot parameters for a tight layout
 
 
 average_user_per_hour = hour_df.groupby('hr')['cnt'].mean()
-print(average_user_per_hour)
 
 plt.figure(figsize=(10, 6))
 plt.plot(average_user_per_hour.index, average_user_per_hour.values)
@@ -136,7 +135,6 @@ plt.ylabel('Average User Count')
 plt.grid(True)
 
 average_hourly_conditions = hour_df.groupby('hr')[['hum', 'temp', 'atemp', 'windspeed']].mean()
-print(average_hourly_conditions)
 
 plt.figure(figsize=(12, 6))
 
@@ -151,7 +149,6 @@ plt.xlabel('Hour')
 plt.ylabel('Average Value')
 plt.grid(True)
 plt.legend()
-plt.show()
 
 
 st.header('Bike Sharing Dashboard')
