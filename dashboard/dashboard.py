@@ -9,7 +9,6 @@ import altair as alt
 hour_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/hour.csv')
 day_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/day.csv')
 
-st.header('Bike Sharing Dashboard')
 
 min_temp = -8
 max_temp = 39
@@ -214,7 +213,8 @@ st.subheader("Monthly Climate Changes in 2011")
 chart_temp_2011 = alt.Chart(monthly_changes_2011).mark_line().encode(
     x='mnth:O',
     y='temp:Q',
-    tooltip=['mnth', 'temp']
+    tooltip=['mnth', 'temp'],
+    color=alt.value('blue')
 ).properties(
     title='Monthly Temperature (2011)'
 )
@@ -222,7 +222,8 @@ chart_temp_2011 = alt.Chart(monthly_changes_2011).mark_line().encode(
 chart_atemp_2011 = alt.Chart(monthly_changes_2011).mark_line(color='orange').encode(
     x='mnth:O',
     y='atemp:Q',
-    tooltip=['mnth', 'atemp']
+    tooltip=['mnth', 'atemp'],
+    color=alt.value('orange')
 ).properties(
     title='Feels Like Temperature (2011)'
 )
@@ -230,6 +231,8 @@ chart_atemp_2011 = alt.Chart(monthly_changes_2011).mark_line(color='orange').enc
 # Combine the charts for temperature and feels like temperature
 combined_temp_2011 = alt.layer(chart_temp_2011, chart_atemp_2011).resolve_scale(
     y='independent'
+).properties(
+    title="Monthly Temperature and Feels Like Temperature in Celsius (2011)"
 )
 
 # Humidity in 2011
@@ -259,10 +262,11 @@ st.altair_chart(chart_windspeed_2011, use_container_width=True)
 st.subheader("Monthly Climate Changes in 2012")
 
 # Temperature and Feels Like Temperature in 2012
-chart_temp_2012 = alt.Chart(monthly_changes_2012).mark_line().encode(
+chart_temp_2012 = alt.Chart(monthly_changes_2012).mark_line(color='blue').encode(
     x='mnth:O',
     y='temp:Q',
-    tooltip=['mnth', 'temp']
+    tooltip=['mnth', 'temp'],
+    color=alt.value('blue')  # Assigning blue color for temperature
 ).properties(
     title='Monthly Temperature (2012)'
 )
@@ -270,7 +274,8 @@ chart_temp_2012 = alt.Chart(monthly_changes_2012).mark_line().encode(
 chart_atemp_2012 = alt.Chart(monthly_changes_2012).mark_line(color='orange').encode(
     x='mnth:O',
     y='atemp:Q',
-    tooltip=['mnth', 'atemp']
+    tooltip=['mnth', 'atemp'],
+    color=alt.value('orange')  # Assigning orange color for feels-like temperature
 ).properties(
     title='Feels Like Temperature (2012)'
 )
@@ -278,8 +283,9 @@ chart_atemp_2012 = alt.Chart(monthly_changes_2012).mark_line(color='orange').enc
 # Combine the charts for temperature and feels like temperature
 combined_temp_2012 = alt.layer(chart_temp_2012, chart_atemp_2012).resolve_scale(
     y='independent'
+).properties(
+    title="Monthly Temperature and Feels Like Temperature in Celsius (2012)"
 )
-
 # Humidity in 2012
 chart_hum_2012 = alt.Chart(monthly_changes_2012).mark_line(color='green').encode(
     x='mnth:O',
