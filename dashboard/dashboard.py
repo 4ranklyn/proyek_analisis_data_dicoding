@@ -319,48 +319,54 @@ st.write("Most users use the service around 8 AM and 5 PM.")
 
 st.title("Average Hourly Weather Conditions")
 
-average_hourly_conditions = average_hourly_conditions.reset_index()
 
 # Create two interactive Altair charts for Streamlit
-st.subheader("Average Hourly Temperature Conditions")
+average_hourly_conditions = average_hourly_conditions.reset_index()
 
-# First chart: Temperature and Feels Like Temperature
-temp_chart = alt.Chart(average_hourly_conditions).transform_fold(
-    ['temp', 'atemp'],
-    as_=['Type', 'Value']
-).mark_line().encode(
-    x='index:O',  # Hour
-    y='Value:Q',
-    color='Type:N',
-    tooltip=['index', 'Value']
+# Temperature and Feels Like Temperature chart
+temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x=alt.X('hour:O', title='Hour'),
+    y=alt.Y('temp:Q', title='Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['temp']), max(average_hourly_conditions['temp'])])),
+    color=alt.value('orange'),
+    tooltip=['hour', 'temp']
 ).properties(
-    title='Average Hourly Temperature and Feels Like Temperature',
-    width=700,
-    height=300
+    title='Average Hourly Temperature'
 )
 
-# Display the first chart in Streamlit
-st.altair_chart(temp_chart, use_container_width=True)
-
-# Second chart: Humidity and Windspeed
-st.subheader("Average Hourly Humidity and Windspeed Conditions")
-
-hum_windspeed_chart = alt.Chart(average_hourly_conditions).transform_fold(
-    ['hum', 'windspeed'],
-    as_=['Type', 'Value']
-).mark_line().encode(
-    x='index:O',  # Hour
-    y='Value:Q',
-    color='Type:N',
-    tooltip=['index', 'Value']
+atemp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x='hour:O',
+    y=alt.Y('atemp:Q', title='Feels Like Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['atemp']), max(average_hourly_conditions['atemp'])])),
+    color=alt.value('red'),
+    tooltip=['hour', 'atemp']
 ).properties(
-    title='Average Hourly Humidity and Windspeed',
-    width=700,
-    height=300
+    title=''
 )
 
-# Display the second chart in Streamlit
-st.altair_chart(hum_windspeed_chart, use_container_width=True)
+combined_temp_chart = alt.layer(temp_chart, atemp_chart).resolve_scale(y='shared')
+
+# Humidity and Windspeed chart
+hum_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x=alt.X('hour:O', title='Hour'),
+    y=alt.Y('hum:Q', title='Humidity', scale=alt.Scale(domain=[min(average_hourly_conditions['hum']), max(average_hourly_conditions['hum'])])),
+    color=alt.value('blue'),
+    tooltip=['hour', 'hum']
+).properties(
+    title='Average Hourly Humidity'
+)
+
+windspeed_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x='hour:O',
+    y=alt.Y('windspeed:Q', title='Windspeed', scale=alt.Scale(domain=[min(average_hourly_conditions['windspeed']), max(average_hourly_conditions['windspeed'])])),
+    color=alt.value('green'),
+    tooltip=['hour', 'windspeed']
+).properties(
+    title='Average Hourly Windspeed'
+)
+
+# Display the two charts in Streamlit
+st.altair_chart(combined_temp_chart, use_container_width=True)
+st.altair_chart(hum_chart, use_container_width=True)
+st.altair_chart(windspeed_chart, use_container_width=True)
 
 
 st.subheader("Summary:")
