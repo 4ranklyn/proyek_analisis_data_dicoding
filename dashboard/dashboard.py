@@ -333,6 +333,16 @@ temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
     title='Average Hourly Temperature'
 )
 
+temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x=alt.X('hr:O', title='Hour'),
+    y=alt.Y('temp:Q', title='Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['temp']), max(average_hourly_conditions['temp'])])),
+    color=alt.value('orange'),
+    tooltip=['hr', 'temp']
+).properties(
+    title='Average Hourly Temperature'
+)
+
+
 atemp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
     x='hr:O',
     y=alt.Y('atemp:Q', title='Feels Like Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['atemp']), max(average_hourly_conditions['atemp'])])),
