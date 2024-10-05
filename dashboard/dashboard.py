@@ -120,27 +120,9 @@ plt.title('Monthly Windspeed (2012)')
 plt.xlabel('Month')
 plt.ylabel('Windspeed')
 plt.legend()
-st.subheader('Monthly Conditions in 2011 and 2012')
 
 plt.tight_layout()  # Adjust subplot parameters for a tight layout
 
-
-# Group daily changes of weathersit across each 24 month
-for year in [2011, 2012]:
-  for month in range(1, 13):
-    monthly_data = day_df[(day_df['yr'] == year) & (day_df['mnth'] == month)]
-    if not monthly_data.empty:
-      plt.figure(figsize=(12, 6))
-      plt.plot(monthly_data['dteday'], monthly_data['weathersit'], marker='o')
-      plt.title(f"Daily Weather Situation Changes ({year}-{month})")
-      plt.xlabel("Date")
-      plt.ylabel("Weather Situation (1-4)")
-      plt.yticks(range(1, 5))
-      plt.ylim(0.5, 4.5)  # Add some deviation for better readability
-      plt.grid(True)
-      plt.xticks(rotation=45, ha='right')
-      plt.tight_layout()
-      plt.show()
 
 
 average_user_per_hour = hour_df.groupby('hr')['cnt'].mean()
@@ -229,32 +211,100 @@ chart = alt.Chart(data).mark_arc(innerRadius=0, outerRadius=100).encode(
 st.altair_chart(chart, use_container_width=True)
 st.write(f"From {total_count} users, there are {registered_count} registered users. The rest are casual ones")
 
-st.subheader('Monthly Temperature, Feels Like Temperature, Humidity, and Windspeed')
+st.subheader("Monthly Climate Changes in 2011")
 
+# Temperature and Feels Like Temperature in 2011
+chart_temp_2011 = alt.Chart(monthly_changes_2011).mark_line().encode(
+    x='mnth:O',
+    y='temp:Q',
+    tooltip=['mnth', 'temp']
+).properties(
+    title='Monthly Temperature (2011)'
+)
 
-fig, ax = plt.subplots()
-ax.plot(monthly_changes_2011.index, monthly_changes_2011['temp'], label='Temperature')
-ax.plot(monthly_changes_2011.index, monthly_changes_2011['atemp'], label='Feels Like Temperature')
-ax.plot(monthly_changes_2011.index, monthly_changes_2011['hum'], label='Humidity')
-ax.plot(monthly_changes_2011.index, monthly_changes_2011['windspeed'], label='Windspeed')
-ax.set_title('Monthly Temperature, Feels Like Temperature, Humidity, and Windspeed (2011)')
-ax.set_xlabel('Month')
-ax.set_ylabel('Temperature')
-ax.legend()
-st.pyplot(fig)
+chart_atemp_2011 = alt.Chart(monthly_changes_2011).mark_line(color='orange').encode(
+    x='mnth:O',
+    y='atemp:Q',
+    tooltip=['mnth', 'atemp']
+).properties(
+    title='Feels Like Temperature (2011)'
+)
 
+# Combine the charts for temperature and feels like temperature
+combined_temp_2011 = alt.layer(chart_temp_2011, chart_atemp_2011).resolve_scale(
+    y='independent'
+)
 
-fig, ax = plt.subplots()
-ax.plot(monthly_changes_2011.index, monthly_changes_2012['temp'], label='Temperature')
-ax.plot(monthly_changes_2011.index, monthly_changes_2012['atemp'], label='Feels Like Temperature')
-ax.plot(monthly_changes_2011.index, monthly_changes_2012['hum'], label='Humidity')
-ax.plot(monthly_changes_2011.index, monthly_changes_2012['windspeed'], label='Windspeed')
-ax.set_title('Monthly Temperature, Feels Like Temperature, Humidity, and Windspeed (2012)')
-ax.set_xlabel('Month')
-ax.set_ylabel('Temperature')
-ax.legend()
-st.pyplot(fig)
+# Humidity in 2011
+chart_hum_2011 = alt.Chart(monthly_changes_2011).mark_line(color='green').encode(
+    x='mnth:O',
+    y='hum:Q',
+    tooltip=['mnth', 'hum']
+).properties(
+    title='Monthly Humidity (2011)'
+)
 
+# Windspeed in 2011
+chart_windspeed_2011 = alt.Chart(monthly_changes_2011).mark_line(color='blue').encode(
+    x='mnth:O',
+    y='windspeed:Q',
+    tooltip=['mnth', 'windspeed']
+).properties(
+    title='Monthly Windspeed (2011)'
+)
+
+# Display 2011 charts in columns
+st.altair_chart(combined_temp_2011, use_container_width=True)
+st.altair_chart(chart_hum_2011, use_container_width=True)
+st.altair_chart(chart_windspeed_2011, use_container_width=True)
+
+# Create charts for 2012
+st.subheader("Monthly Climate Changes in 2012")
+
+# Temperature and Feels Like Temperature in 2012
+chart_temp_2012 = alt.Chart(monthly_changes_2012).mark_line().encode(
+    x='mnth:O',
+    y='temp:Q',
+    tooltip=['mnth', 'temp']
+).properties(
+    title='Monthly Temperature (2012)'
+)
+
+chart_atemp_2012 = alt.Chart(monthly_changes_2012).mark_line(color='orange').encode(
+    x='mnth:O',
+    y='atemp:Q',
+    tooltip=['mnth', 'atemp']
+).properties(
+    title='Feels Like Temperature (2012)'
+)
+
+# Combine the charts for temperature and feels like temperature
+combined_temp_2012 = alt.layer(chart_temp_2012, chart_atemp_2012).resolve_scale(
+    y='independent'
+)
+
+# Humidity in 2012
+chart_hum_2012 = alt.Chart(monthly_changes_2012).mark_line(color='green').encode(
+    x='mnth:O',
+    y='hum:Q',
+    tooltip=['mnth', 'hum']
+).properties(
+    title='Monthly Humidity (2012)'
+)
+
+# Windspeed in 2012
+chart_windspeed_2012 = alt.Chart(monthly_changes_2012).mark_line(color='blue').encode(
+    x='mnth:O',
+    y='windspeed:Q',
+    tooltip=['mnth', 'windspeed']
+).properties(
+    title='Monthly Windspeed (2012)'
+)
+
+# Display 2012 charts in columns
+st.altair_chart(combined_temp_2012, use_container_width=True)
+st.altair_chart(chart_hum_2012, use_container_width=True)
+st.altair_chart(chart_windspeed_2012, use_container_width=True)
 
 st.subheader('Average User Count per Hour')
 st.line_chart(average_user_per_hour)
