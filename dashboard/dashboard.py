@@ -34,27 +34,14 @@ year_mapping = {0: 2011, 1: 2012}
 hour_df['yr'] = hour_df['yr'].map(year_mapping)
 day_df['yr'] = day_df['yr'].map(year_mapping)
 
-casual_count = day_df['casual'].sum()
-registered_count = day_df['registered'].sum()
-total_count = day_df['cnt'].sum()
 
-
-st.subheader('Total Users by Year and Month')
 
 yearly_monthly_user_totals = day_df.groupby(['yr', 'mnth'])['cnt'].sum().reset_index()
 
-yearly_monthly_user_totals.plot(kind='bar', stacked=True)
 
-plt.title("Monthly User Usage across 2011 and 2012")
-plt.xlabel("Month")
-plt.ylabel("Total User Usage (cnt)")
-plt.legend(title="Year")
-st.pyplot(plt)
-st.write(f"There are about {total_count} users who share bikes across 2011 and 2012.")
-
-
-
-
+casual_count = day_df['casual'].sum()
+registered_count = day_df['registered'].sum()
+total_count = day_df['cnt'].sum()
 
 
 labels = ['Casual Users', 'Registered Users']
@@ -68,11 +55,6 @@ plt.pie(sizes, explode=explode, labels=labels, colors=colors,
 
 plt.axis('equal')
 plt.title('Distribution of Casual Users vs Registered Users')
-
-st.subheader('User Distribution: Casual vs Registered')
-
-st.pyplot(plt)
-st.write(f"From {total_count} users, there are {registered_count} registered users. The rest are casual ones")
 
 
 monthly_changes = day_df.groupby(['yr', 'mnth'])[['temp', 'atemp', 'hum', 'windspeed']].mean()
@@ -110,7 +92,6 @@ plt.ylabel('Windspeed')
 plt.legend()
 
 plt.tight_layout()  # Adjust subplot parameters for a tight layout
-plt.show()
 
 
 plt.figure(figsize=(20, 5))  # Adjust figure size for better readability
@@ -142,7 +123,7 @@ plt.legend()
 st.subheader('Monthly Conditions in 2011 and 2012')
 
 plt.tight_layout()  # Adjust subplot parameters for a tight layout
-st.pyplot(plt)
+
 
 # Group daily changes of weathersit across each 24 month
 for year in [2011, 2012]:
@@ -172,10 +153,6 @@ plt.xlabel('Hour')
 plt.ylabel('Average User Count')
 plt.grid(True)
 
-st.subheader('Average User Count per Hour')
-st.pyplot(plt)
-st.write("Most users use the service around 8 AM and 5 PM.")
-
 average_hourly_conditions = hour_df.groupby('hr')[['hum', 'temp', 'atemp', 'windspeed']].mean()
 print(average_hourly_conditions)
 
@@ -193,8 +170,6 @@ plt.ylabel('Average Value')
 plt.grid(True)
 plt.legend()
 plt.show()
-st.subheader('Average Hourly Conditions')
-st.pyplot(plt)
 
 
 st.header('Bike Sharing Dashboard')
@@ -227,13 +202,22 @@ st.write(f"There are about {total_count} users who share bikes across 2011 and 2
 
 st.subheader('User Distribution: Casual vs Registered')
 
+data = pd.DataFrame({
+    'User Type': ['Casual Users', 'Registered Users'],
+    'Count': [casual_count, registered_count]
+})
 
-fig, ax = plt.subplots()
-ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
-ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-plt.title('Distribution of Casual Users vs Registered Users')
+# Create a donut chart with Altair
+chart = alt.Chart(data).mark_arc(innerRadius=50, outerRadius=100).encode(
+    theta=alt.Theta(field="Count", type="quantitative"),
+    color=alt.Color(field="User Type", type="nominal", scale=alt.Scale(range=['#ff9999','#66b3ff'])),
+    tooltip=['User Type', 'Count']
+).properties(
+    title='Distribution of Casual Users vs Registered Users'
+)
 
-st.pyplot(fig)
+# Display the chart in Streamlit
+st.altair_chart(chart, use_container_width=True)
 st.write(f"From {total_count} users, there are {registered_count} registered users. The rest are casual ones")
 
 st.subheader('Monthly Temperature, Feels Like Temperature, Humidity, and Windspeed')
