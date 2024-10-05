@@ -317,7 +317,9 @@ st.subheader('Average User Count per Hour')
 st.line_chart(average_user_per_hour)
 st.write("Most users use the service around 8 AM and 5 PM.")
 
-st.subheader('Average Hourly Conditions')
+st.title("Average Hourly Weather Conditions")
+
+# Create a figure with two subplots (2 rows, 1 column)
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
 
 # First subplot: Temperature and Feels Like Temperature
@@ -342,6 +344,8 @@ ax2.legend()
 
 # Adjust layout to prevent overlap
 plt.tight_layout()
+
+# Display the plot in Streamlit
 st.pyplot(fig)
 st.subheader("Summary:")
 st.write("The busiest months were September 2011 and September 2012, possibly due to favorable weather. Rush hour appears to be around 8 AM and 5 PM, when people commute to work or school.  Comfortable temperature and humidity levels appear to contribute to higher user counts. ")
