@@ -4,6 +4,27 @@
 
 This project analyzes bike sharing data to understand user behavior and identify factors influencing bike usage. We aim to answer key business questions related to user trends, seasonal patterns, and environmental factors.
 
+## Setup Environment - Anaconda
+```
+conda create --name main-ds python=3.12
+conda activate main-ds
+pip install -r requirements.txt
+```
+
+## Setup Environment - Shell/Terminal
+```
+mkdir proyek_analisis_data
+cd proyek_analisis_data
+pipenv install
+pipenv shell
+pip install -r requirements.txt
+```
+
+## Run steamlit app
+```
+streamlit run dashboard\dashboard.py
+```
+
 ## Data
 
 The project utilizes two datasets:
