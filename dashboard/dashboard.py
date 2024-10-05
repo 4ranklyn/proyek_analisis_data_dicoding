@@ -257,7 +257,7 @@ chart_windspeed_2011 = alt.Chart(monthly_changes_2011).mark_line(color='blue').e
 
 # Display 2011 charts in columns
 st.altair_chart(combined_temp_2011, use_container_width=True)
-st.write("Blue means temperature, orange means feels like temperature.")
+st.write("Blue means temperature, orange means feels like temperature.\n")
 st.altair_chart(chart_hum_2011, use_container_width=True)
 st.altair_chart(chart_windspeed_2011, use_container_width=True)
 
@@ -309,7 +309,7 @@ chart_windspeed_2012 = alt.Chart(monthly_changes_2012).mark_line(color='blue').e
 
 # Display 2012 charts in columns
 st.altair_chart(combined_temp_2012, use_container_width=True)
-st.write("Blue means temperature, orange means feels like temperature.")
+st.write("Blue means temperature, orange means feels like temperature.\n")
 st.altair_chart(chart_hum_2012, use_container_width=True)
 st.altair_chart(chart_windspeed_2012, use_container_width=True)
 
@@ -335,7 +335,7 @@ temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
 
 temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
     x=alt.X('hr:O', title='Hour'),
-    y=alt.Y('temp:Q', title='Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['temp']), max(average_hourly_conditions['temp'])])),
+    y=alt.Y('temp:Q', title='temp (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['temp']), max(average_hourly_conditions['temp'])])),
     color=alt.value('orange'),
     tooltip=['hr', 'temp']
 ).properties(
@@ -345,7 +345,7 @@ temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
 
 atemp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
     x='hr:O',
-    y=alt.Y('atemp:Q', title='Feels Like Temperature (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['atemp']), max(average_hourly_conditions['atemp'])])),
+    y=alt.Y('atemp:Q', title='atemp (Celsius)', scale=alt.Scale(domain=[min(average_hourly_conditions['atemp']), max(average_hourly_conditions['atemp'])])),
     color=alt.value('red'),
     tooltip=['hr', 'atemp']
 ).properties(
@@ -375,6 +375,7 @@ windspeed_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
 
 # Display the two charts in Streamlit
 st.altair_chart(combined_temp_chart, use_container_width=True)
+st.write("temp is the Temperature (in orange), atemp is feels like temperature (in red)\n")
 st.altair_chart(hum_chart, use_container_width=True)
 st.altair_chart(windspeed_chart, use_container_width=True)
 
