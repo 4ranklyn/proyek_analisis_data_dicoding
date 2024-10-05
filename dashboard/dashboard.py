@@ -204,10 +204,10 @@ yearly_monthly_user_totals['yr_mnth'] = yearly_monthly_user_totals['yr'].astype(
 
 # Use Altair to create the stacked bar chart
 chart = alt.Chart(yearly_monthly_user_totals).mark_bar().encode(
-    x='Month:O',
-    y='Total_User_Usage:Q',
-    color='Year:N',
-    tooltip=['Year', 'Month', 'Total_User_Usage']
+    x='mnth:O',
+    y='cnt:Q',
+    color='yr:N',
+    tooltip=['yr', 'mnth', 'cnt']
 ).properties(
     title="Monthly User Usage across 2011 and 2012"
 ).interactive()
