@@ -4,6 +4,7 @@
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import matplotlib.pyplot as plt
 import streamlit as st
+import altair as alt
 
 hour_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/hour.csv')
 day_df = pd.read_csv('https://raw.githubusercontent.com/4ranklyn/proyek_analisis_data_dicoding/refs/heads/main/data/day.csv')
@@ -40,7 +41,7 @@ total_count = day_df['cnt'].sum()
 
 st.subheader('Total Users by Year and Month')
 
-yearly_monthly_user_totals = day_df.groupby(['yr', 'mnth'])['cnt'].sum()
+yearly_monthly_user_totals = day_df.groupby(['yr', 'mnth'])['cnt'].sum().reset_index()
 
 yearly_monthly_user_totals.plot(kind='bar', stacked=True)
 
@@ -199,7 +200,19 @@ st.pyplot(plt)
 st.header('Bike Sharing Dashboard')
 
 st.subheader('Total Users by Year and Month')
-st.bar_chart(yearly_monthly_user_totals)
+yearly_monthly_user_totals['Year_Month'] = yearly_monthly_user_totals['Year'].astype(str) + '-' + yearly_monthly_user_totals['Month'].astype(str)
+
+# Use Altair to create the stacked bar chart
+chart = alt.Chart(yearly_monthly_user_totals).mark_bar().encode(
+    x='Month:O',
+    y='Total_User_Usage:Q',
+    color='Year:N',
+    tooltip=['Year', 'Month', 'Total_User_Usage']
+).properties(
+    title="Monthly User Usage across 2011 and 2012"
+).interactive()
+
+st.altair_chart(chart, use_container_width=True)
 st.write(f"There are about {total_count} users who share bikes across 2011 and 2012.")
 
 
