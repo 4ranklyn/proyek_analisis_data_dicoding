@@ -200,19 +200,28 @@ st.pyplot(plt)
 st.header('Bike Sharing Dashboard')
 
 st.subheader('Total Users by Year and Month')
+
+yearly_monthly_user_totals.columns = ['yr', 'mnth', 'cnt']
+
+# Create a new 'yr_mnth' column for combined year and month label
 yearly_monthly_user_totals['yr_mnth'] = yearly_monthly_user_totals['yr'].astype(str) + '-' + yearly_monthly_user_totals['mnth'].astype(str)
 
-# Use Altair to create the stacked bar chart
+# Sort by yr and mnth for proper ordering
+yearly_monthly_user_totals = yearly_monthly_user_totals.sort_values(by=['yr', 'mnth'])
+
+# Use Altair to create the bar chart showing all 24 months
 chart = alt.Chart(yearly_monthly_user_totals).mark_bar().encode(
-    x='mnth:O',
+    x=alt.X('yr_mnth:O', sort=None, title='Month-Year'),
     y='cnt:Q',
-    color='yr:N',
+    color='yr:N',  # Color by year
     tooltip=['yr', 'mnth', 'cnt']
 ).properties(
     title="Monthly User Usage across 2011 and 2012"
 ).interactive()
 
+# Display the chart in Streamlit
 st.altair_chart(chart, use_container_width=True)
+
 st.write(f"There are about {total_count} users who share bikes across 2011 and 2012.")
 
 
