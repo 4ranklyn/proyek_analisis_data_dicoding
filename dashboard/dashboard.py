@@ -57,11 +57,11 @@ plt.axis('equal')
 plt.title('Distribution of Casual Users vs Registered Users')
 
 
-monthly_changes = day_df.groupby(['yr', 'mnth'])[['temp', 'atemp', 'hum', 'windspeed']].mean()
+monthly_changes = day_df.groupby(['yr', 'mnth'])[['temp', 'atemp', 'hum', 'windspeed']].mean().reset_index()
 
 # Separate data for 2011 and 2012
-monthly_changes_2011 = monthly_changes.loc[2011]
-monthly_changes_2012 = monthly_changes.loc[2012]
+monthly_changes_2011 = monthly_changes[monthly_changes['yr'] == 2011]
+monthly_changes_2012 = monthly_changes[monthly_changes['yr'] == 2012]
 
 
 plt.figure(figsize=(20, 5))  # Adjust figure size for better readability
