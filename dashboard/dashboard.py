@@ -200,7 +200,7 @@ st.pyplot(plt)
 st.header('Bike Sharing Dashboard')
 
 st.subheader('Total Users by Year and Month')
-yearly_monthly_user_totals['Year_Month'] = yearly_monthly_user_totals['Year'].astype(str) + '-' + yearly_monthly_user_totals['Month'].astype(str)
+yearly_monthly_user_totals['yr_mnth'] = yearly_monthly_user_totals['yr'].astype(str) + '-' + yearly_monthly_user_totals['mnth'].astype(str)
 
 # Use Altair to create the stacked bar chart
 chart = alt.Chart(yearly_monthly_user_totals).mark_bar().encode(
