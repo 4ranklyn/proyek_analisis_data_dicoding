@@ -202,31 +202,35 @@ st.write(f"There are about {total_count} users who share bikes across 2011 and 2
 
 st.subheader('User Distribution: Casual vs Registered')
 
-casual_percentage = (casual_count / total_count) * 100
-registered_percentage = (registered_count / total_count) * 100
+casual_pct = (casual_count / total_count) * 100
+registered_pct = (registered_count / total_count) * 100
 
-data = pd.DataFrame({
-    'User Type': ['Casual Users', 'Registered Users'],
-    'Count': [casual_count, registered_count]
-})
-
-# Create a donut chart with Altair
+# Create a DataFrame for Altair
 data = pd.DataFrame({
     'User Type': ['Casual Users', 'Registered Users'],
     'Count': [casual_count, registered_count],
-    'Percentage': [casual_percentage, registered_percentage]
+    'Percentage': [casual_pct, registered_pct]
 })
 
-# Create a pie chart with Altair
-chart = alt.Chart(data).mark_arc(innerRadius=0, outerRadius=100).encode(
+# Create the pie chart with Altair
+chart = alt.Chart(data).mark_arc(outerRadius=100).encode(
     theta=alt.Theta(field="Count", type="quantitative"),
     color=alt.Color(field="User Type", type="nominal", scale=alt.Scale(range=['#ff9999','#66b3ff'])),
     tooltip=['User Type', 'Count', alt.Tooltip('Percentage:Q', format='.1f')]
 ).properties(
     title='Distribution of Casual Users vs Registered Users'
 )
+
+# Add text labels for percentages
+text = chart.mark_text(radius=120, size=14).encode(
+    text=alt.Text('Percentage:Q', format='.1f%')
+)
+
+# Combine the pie chart and percentage labels
+pie_chart_with_labels = chart + text
+
 # Display the chart in Streamlit
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(pie_chart_with_labels, use_container_width=True)
 st.write(f"From {total_count} users, there are {registered_count} registered users. The rest are casual ones")
 
 st.subheader('Monthly Temperature, Feels Like Temperature, Humidity, and Windspeed')
