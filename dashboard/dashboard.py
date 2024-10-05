@@ -209,11 +209,12 @@ st.write(f"From {total_count} users, there are {registered_count} registered use
 
 st.subheader("Monthly Climate Changes in 2011")
 
+# Temperature and Feels Like Temperature in 2011
 chart_temp_2011 = alt.Chart(monthly_changes_2011).mark_line(color='#1f77b4').encode(
     x='mnth:O',
     y='temp:Q',
     tooltip=['mnth', 'temp'],
-    color=alt.value('#1f77b4')  # Blue for Temperature
+    color=alt.value('#1f77b4')
 ).properties(
     title='Monthly Temperature (2011)'
 )
@@ -222,23 +223,19 @@ chart_atemp_2011 = alt.Chart(monthly_changes_2011).mark_line(color='#ff7f0e').en
     x='mnth:O',
     y='atemp:Q',
     tooltip=['mnth', 'atemp'],
-    color=alt.value('#ff7f0e')  # Orange for Feels Like Temperature
+    color=alt.value('#ff7f0e')
 ).properties(
     title='Feels Like Temperature (2011)'
 )
 
-# Combine the charts for temperature and feels like temperature with a legend
+# Combine the charts for temperature and feels like temperature
 combined_temp_2011 = alt.layer(chart_temp_2011, chart_atemp_2011).resolve_scale(
     y='independent'
-).configure_legend(
-    title=None,
-    orient='bottom',
-    labelFontSize=12
 ).properties(
-    title='Temperature vs Feels Like Temperature (2011)',
-    width=600,
-    height=300
+    title="Monthly Temperature and Feels Like Temperature in Celsius (2011)"
 )
+
+st.write("Blue means temperature, orange means feels like temperature.")
 
 # Humidity in 2011
 chart_hum_2011 = alt.Chart(monthly_changes_2011).mark_line(color='green').encode(
@@ -266,13 +263,12 @@ st.altair_chart(chart_windspeed_2011, use_container_width=True)
 # Create charts for 2012
 st.subheader("Monthly Climate Changes in 2012")
 
-
 # Temperature and Feels Like Temperature in 2012
 chart_temp_2012 = alt.Chart(monthly_changes_2012).mark_line(color='#1f77b4').encode(
     x='mnth:O',
     y='temp:Q',
     tooltip=['mnth', 'temp'],
-    color=alt.value('#1f77b4')  # Blue for Temperature
+    color=alt.value('#1f77b4')  # Assigning blue color for temperature
 ).properties(
     title='Monthly Temperature (2012)'
 )
@@ -281,24 +277,17 @@ chart_atemp_2012 = alt.Chart(monthly_changes_2012).mark_line(color='#ff7f0e').en
     x='mnth:O',
     y='atemp:Q',
     tooltip=['mnth', 'atemp'],
-    color=alt.value('#ff7f0e')  # Orange for Feels Like Temperature
+    color=alt.value('#ff7f0e')  # Assigning orange color for feels-like temperature
 ).properties(
     title='Feels Like Temperature (2012)'
 )
 
-# Combine the charts for temperature and feels like temperature with a legend
+# Combine the charts for temperature and feels like temperature
 combined_temp_2012 = alt.layer(chart_temp_2012, chart_atemp_2012).resolve_scale(
     y='independent'
-).configure_legend(
-    title=None,
-    orient='bottom',
-    labelFontSize=12
 ).properties(
-    title='Monthly Temperature vs Feels Like Temperature In Celcius (2012)',
-    width=600,
-    height=300
+    title="Monthly Temperature and Feels Like Temperature in Celsius (2012)"
 )
-
 # Humidity in 2012
 chart_hum_2012 = alt.Chart(monthly_changes_2012).mark_line(color='green').encode(
     x='mnth:O',
