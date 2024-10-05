@@ -320,32 +320,34 @@ st.write("Most users use the service around 8 AM and 5 PM.")
 st.title("Average Hourly Weather Conditions")
 
 # Create a figure with two subplots (2 rows, 1 column)
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+temp_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x='hr',
+    y=alt.Y('temp', title='Temperature'),
+    tooltip=['hr', 'temp'],  # Add tooltip for better interaction
+    color='variable',
+    # Add a legend to differentiate the lines
+    legend=alt.Legend(title='Variable')
+).properties(
+    title='Temperature and Feels Like Temperature'
+).interactive()  # Make the chart interactive
 
-# First subplot: Temperature and Feels Like Temperature
-ax1.plot(average_hourly_conditions.index, average_hourly_conditions['temp'], label='Temperature (Celsius)', color='orange')
-ax1.plot(average_hourly_conditions.index, average_hourly_conditions['atemp'], label='Feels Like Temperature (Celsius)', color='red')
+# Create a chart for humidity and windspeed
+humidity_windspeed_chart = alt.Chart(average_hourly_conditions).mark_line().encode(
+    x='hr',
+    y=alt.Y('hum', title='Humidity'),
+    tooltip=['hr', 'hum'],  # Add tooltip for better interaction
+    color='variable',
+    # Add a legend to differentiate the lines
+    legend=alt.Legend(title='Variable')
+).properties(
+    title='Humidity and Windspeed'
+).interactive()  # Make the chart interactive
 
-ax1.set_title('Average Hourly Temperature Conditions')
-ax1.set_xlabel('Hour')
-ax1.set_ylabel('Temperature (Celsius)')
-ax1.grid(True)
-ax1.legend()
+# Display the charts in Streamlit
+st.altair_chart(temp_chart)
+st.altair_chart(humidity_windspeed_chart)
+# Show the chart in Streamlit
 
-# Second subplot: Humidity and Windspeed
-ax2.plot(average_hourly_conditions.index, average_hourly_conditions['hum'], label='Humidity', color='blue')
-ax2.plot(average_hourly_conditions.index, average_hourly_conditions['windspeed'], label='Windspeed', color='green')
 
-ax2.set_title('Average Hourly Humidity and Windspeed Conditions')
-ax2.set_xlabel('Hour')
-ax2.set_ylabel('Average Value')
-ax2.grid(True)
-ax2.legend()
-
-# Adjust layout to prevent overlap
-plt.tight_layout()
-
-# Display the plot in Streamlit
-st.pyplot(fig)
 st.subheader("Summary:")
 st.write("The busiest months were September 2011 and September 2012, possibly due to favorable weather. Rush hour appears to be around 8 AM and 5 PM, when people commute to work or school.  Comfortable temperature and humidity levels appear to contribute to higher user counts. ")
